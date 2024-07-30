@@ -10,6 +10,7 @@ const CheckQR = () => {
 
     return (
         <div>
+            <input accept="image/*" id="icon-button-file" type="file" capture="environment" />
             <input
                 type="text"
                 value={inputValue}
