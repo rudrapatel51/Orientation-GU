@@ -13,9 +13,9 @@ const UserForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError(''); // Reset error message before each submission
+        setError('');
 
-        // Set QR data before sending to API
+        // Qr is sent in this data
         const qrDataObject = { uid, name, mobile, email };
         setQrData(qrDataObject);
 
@@ -28,21 +28,18 @@ const UserForm = () => {
                 email,
             });
 
-            // Log response data for debugging
             console.log(response.data);
 
-            // Check if the response format and content are as expected
             if (response.status === 200 && response.data && response.data.created) {
                 const createdData = response.data.created[0];
                 if (createdData && createdData.id) {
-                    const uniqueId = createdData.id; // Ensure this path matches the response data structure
+                    const uniqueId = createdData.id;
                     setQrData({ ...qrDataObject, uniqueId });
                 } else {
                     setError('Response data is missing expected fields.');
                 }
             }
         } catch (err) {
-            // Log the error for debugging
             console.error(err);
             setError(`Error occurred: ${err.response ? err.response.data : err.message}`);
         }
