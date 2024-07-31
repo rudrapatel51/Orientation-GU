@@ -15,7 +15,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route index element={<QrLogin />} />
-        <Route path="scan" element={<Login />} />
+        <Route path="/scan" element={<Login />} />
         <Route path="*" element={<NoPage />} />
       </Routes>
     </BrowserRouter>
