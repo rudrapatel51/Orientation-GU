@@ -10,7 +10,13 @@ const QRCodeScanner = () => {
     useEffect(() => {
         const startCamera = async () => {
             try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                // Request the back camera specifically
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: {
+                        facingMode: { ideal: 'environment' } // 'ideal' to fallback if not available
+                    }
+                });
+
                 videoRef.current.srcObject = stream;
                 videoRef.current.setAttribute('playsinline', true);
                 videoRef.current.addEventListener('loadedmetadata', () => {
@@ -19,9 +25,10 @@ const QRCodeScanner = () => {
                 });
             } catch (error) {
                 console.error('Error accessing camera: ', error);
-                setStatus('Error accessing camera. Please ensure permissions are granted and you are using HTTPS.');
+                setStatus('Error accessing camera. Ensure permissions are granted and you are using HTTPS.');
             }
         };
+
 
         const scanQRCode = () => {
             if (videoRef.current && canvasRef.current) {
@@ -92,6 +99,7 @@ const QRCodeScanner = () => {
 
     return (
         <div>
+            <h1>This camera is to submit the record</h1>
             <video ref={videoRef} style={{ width: '100%' }} />
             <canvas ref={canvasRef} style={{ display: 'none' }} />
             <p>{status}</p>

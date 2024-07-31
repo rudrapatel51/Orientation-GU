@@ -1,32 +1,47 @@
-import React, { useState } from 'react';
-import QRCode from 'qrcode.react';
+import React, { useEffect, useRef, useState } from 'react';
 
-const CheckQR = () => {
-    const [inputValue, setInputValue] = useState('');
+const CheckQr = () => {
+    const videoRef = useRef(null);
+    const [hasCameraPermission, setHasCameraPermission] = useState(true);
 
-    const handleInputChange = (e) => {
-        setInputValue(e.target.value);
-    };
+    useEffect(() => {
+        const startCamera = async () => {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: 'environment' } // 'environment' to access the back camera
+                });
+                if (videoRef.current) {
+                    videoRef.current.srcObject = stream;
+                    videoRef.current.play();
+                }
+            } catch (error) {
+                console.error('Error accessing camera:', error);
+                setHasCameraPermission(false);
+            }
+        };
+
+        startCamera();
+
+        // Clean up function to stop the video stream when component unmounts
+        return () => {
+            if (videoRef.current && videoRef.current.srcObject) {
+                const stream = videoRef.current.srcObject;
+                const tracks = stream.getTracks();
+                tracks.forEach(track => track.stop());
+            }
+        };
+    }, []);
 
     return (
         <div>
-            <input accept="image/*" id="icon-button-file" type="file" capture="environment" />
-            <input
-                type="text"
-                value={inputValue}
-                onChange={handleInputChange}
-                placeholder="Enter text for QR code"
-            />
-            {inputValue && (
-                <QRCode
-                    id="qr-code"
-                    value={inputValue}
-                    size={256}
-                    includeMargin={true}
-                />
+            <h1>this to check the back camera accesss</h1>
+            {hasCameraPermission ? (
+                <video ref={videoRef} width="100%" height="auto" />
+            ) : (
+                <p>Camera permission is not granted or an error occurred.</p>
             )}
         </div>
     );
 };
 
-export default CheckQR;
+export default CheckQr;
