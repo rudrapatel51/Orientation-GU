@@ -10,26 +10,7 @@ const QRCodeScanner = () => {
     useEffect(() => {
         const startCamera = async () => {
             try {
-                // Get available video devices
-                const devices = await navigator.mediaDevices.enumerateDevices();
-                const videoDevices = devices.filter(device => device.kind === 'videoinput');
-
-                // Find the back camera (if multiple cameras are available)
-                const backCamera = videoDevices.find(device => {
-                    return device.label.toLowerCase().includes('back') || device.label.toLowerCase().includes('rear');
-                });
-
-                // Default to the first video device if no back camera is found
-                const selectedDeviceId = backCamera ? backCamera.deviceId : videoDevices[0]?.deviceId;
-
-                // Request the selected camera
-                const stream = await navigator.mediaDevices.getUserMedia({
-                    video: {
-                        deviceId: selectedDeviceId,
-                        facingMode: { exact: 'environment' } // Request the back camera
-                    }
-                });
-
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
                 videoRef.current.srcObject = stream;
                 videoRef.current.setAttribute('playsinline', true);
                 videoRef.current.addEventListener('loadedmetadata', () => {
