@@ -3,18 +3,22 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import UserForm from './Components/UserForm'
-import CheckQR from './Components/CheckQR'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import QRCodeScanner from './Components/QRCodeScanner'
+import NoPage from "./Components/NoPage"
+import Login from './Authentication/Login'
+import QrLogin from './Authentication/QrLogin'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
-    <>
-      <UserForm />
-      {/* <CheckQR /> */}
-      <QRCodeScanner />
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route index element={<QrLogin />} />
+        <Route path="scan" element={<Login />} />
+        <Route path="*" element={<NoPage />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 

@@ -1,5 +1,4 @@
 import React, { useState, useRef } from 'react';
-import axios from 'axios';
 import QRCode from 'qrcode.react';
 
 const UserForm = () => {
@@ -11,7 +10,7 @@ const UserForm = () => {
     const [error, setError] = useState('');
     const qrCodeRef = useRef(null);
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
         setError('');
 
@@ -29,35 +28,11 @@ const UserForm = () => {
             return;
         }
 
-        // QR data to be sent
+        // QR data to be generated
         const qrDataObject = { uid, name, mobile, email };
         setQrData(qrDataObject);
-
-        try {
-            const apiUrl = 'https://sheetdb.io/api/v1/3y58wwz9jpmgy';
-            const response = await axios.post(apiUrl, {
-                uid,
-                name,
-                mobile,
-                email,
-            });
-
-            console.log(response.data);
-
-            if (response.status === 200 && response.data && response.data.created) {
-                const createdData = response.data.created[0];
-                if (createdData && createdData.id) {
-                    const uniqueId = createdData.id;
-                    setQrData({ ...qrDataObject, uniqueId });
-                } else {
-                    setError('Response data is missing expected fields.');
-                }
-            }
-        } catch (err) {
-            console.error(err);
-            setError(`Error occurred: ${err.response ? err.response.data : err.message}`);
-        }
     };
+
     const downloadQRCode = () => {
         if (qrCodeRef.current) {
             const canvas = qrCodeRef.current.querySelector('canvas');

@@ -63,8 +63,8 @@ const QRCodeScanner = () => {
                     const existingEntry = sheetData.find(entry => entry.mobile === qrData.mobile);
 
                     if (existingEntry) {
-                        // If the record exists, show an error message
                         setStatus('Error: User already registered.');
+                        alert("User Already Exits");
                     } else {
                         // If the record does not exist, add a new record
                         await axios.post('https://sheetdb.io/api/v1/3y58wwz9jpmgy', {
