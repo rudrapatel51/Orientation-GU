@@ -10,16 +10,16 @@ const QRCodeScanner = () => {
     useEffect(() => {
         const startCamera = async () => {
             try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
                 videoRef.current.srcObject = stream;
-                videoRef.current.setAttribute('playsinline', true);
+                videoRef.current.setAttribute('playsinline', true); 
                 videoRef.current.addEventListener('loadedmetadata', () => {
                     videoRef.current.play();
                     requestAnimationFrame(scanQRCode);
                 });
             } catch (error) {
-                setStatus('Error accessing camera');
-                console.error(error);
+                console.error('Error accessing camera: ', error);
+                setStatus('Error accessing camera. Please ensure permissions are granted and you are using HTTPS.');
             }
         };
 
@@ -50,16 +50,13 @@ const QRCodeScanner = () => {
                 const qrData = JSON.parse(data);
 
                 if (qrData.uid && qrData.name && qrData.mobile && qrData.email) {
-                    // Fetch all records
                     const response = await axios.get('https://sheetdb.io/api/v1/3y58wwz9jpmgy');
                     const sheetData = response.data;
 
-                    // Find existing record
                     const existingEntry = sheetData.find(entry => entry.mobile === qrData.mobile);
 
                     if (existingEntry) {
-                        // Update the existing record
-                        await axios.post('https://sheetdb.io/api/v1/3y58wwz9jpmgy/update', {
+                        await axios.post('https://sheetdb.io/api/v1/3y58wwz9jpmgy', {
                             data: {
                                 uid: existingEntry.uid,
                                 name: existingEntry.name,
@@ -76,8 +73,8 @@ const QRCodeScanner = () => {
                     setStatus('Invalid QR code data format');
                 }
             } catch (error) {
+                console.error('Error processing QR code: ', error);
                 setStatus('Error processing QR code');
-                console.error(error);
             }
         };
 
