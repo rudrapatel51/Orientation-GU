@@ -15,7 +15,21 @@ const UserForm = () => {
         e.preventDefault();
         setError('');
 
-        // Qr is sent in this data
+        // Email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            setError('Invalid email format.');
+            return;
+        }
+
+        // Mobile number validation
+        const mobileRegex = /^\d{10}$/;
+        if (!mobileRegex.test(mobile)) {
+            setError('Mobile number must be exactly 10 digits.');
+            return;
+        }
+
+        // QR data to be sent
         const qrDataObject = { uid, name, mobile, email };
         setQrData(qrDataObject);
 
@@ -44,7 +58,6 @@ const UserForm = () => {
             setError(`Error occurred: ${err.response ? err.response.data : err.message}`);
         }
     };
-
     const downloadQRCode = () => {
         if (qrCodeRef.current) {
             const canvas = qrCodeRef.current.querySelector('canvas');
