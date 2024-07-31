@@ -14,9 +14,8 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<QRCodeScanner />} />
+        <Route path="/" element={<QrLogin />} />
         <Route path="/scan" element={<Login />} />
-        <Route path="*" element={<NoPage />} />
       </Routes>
     </BrowserRouter>
   )
