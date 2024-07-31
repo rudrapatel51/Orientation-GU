@@ -12,7 +12,7 @@ function App() {
   return (
     <>
       <UserForm />
-      <CheckQR />
+      {/* <CheckQR /> */}
       <QRCodeScanner />
     </>
   )

@@ -29,7 +29,6 @@ const QRCodeScanner = () => {
             }
         };
 
-
         const scanQRCode = () => {
             if (videoRef.current && canvasRef.current) {
                 const video = videoRef.current;
@@ -57,24 +56,31 @@ const QRCodeScanner = () => {
                 const qrData = JSON.parse(data);
 
                 if (qrData.uid && qrData.name && qrData.mobile && qrData.email) {
+                    // Fetch all records to check if the mobile number already exists
                     const response = await axios.get('https://sheetdb.io/api/v1/3y58wwz9jpmgy');
                     const sheetData = response.data;
 
                     const existingEntry = sheetData.find(entry => entry.mobile === qrData.mobile);
 
                     if (existingEntry) {
+                        // If the record exists, show an error message
+                        setStatus('Error: User already registered.');
+                    } else {
+                        // If the record does not exist, add a new record
                         await axios.post('https://sheetdb.io/api/v1/3y58wwz9jpmgy', {
                             data: {
-                                uid: existingEntry.uid,
-                                name: existingEntry.name,
-                                mobile: existingEntry.mobile,
-                                email: existingEntry.email,
+                                uid: qrData.uid,
+                                name: qrData.name,
+                                mobile: qrData.mobile,
+                                email: qrData.email,
                                 present: true
                             }
                         });
-                        setStatus('Record updated successfully');
-                    } else {
-                        setStatus('Record not found');
+                        setStatus('Record added successfully');
+                        // Refresh the page to clear state and prepare for the next user
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 2000); // Optional delay for user to see the success message
                     }
                 } else {
                     setStatus('Invalid QR code data format');
