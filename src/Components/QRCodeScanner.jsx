@@ -77,10 +77,10 @@ const QRCodeScanner = () => {
                             }
                         });
                         setStatus('Record added successfully');
-                        // Refresh the page to clear state and prepare for the next user
+                        alert("user added successfull")
                         setTimeout(() => {
                             window.location.reload();
-                        }, 2000); // Optional delay for user to see the success message
+                        }, 1000); // Optional delay for user to see the success message
                     }
                 } else {
                     setStatus('Invalid QR code data format');
@@ -105,7 +105,7 @@ const QRCodeScanner = () => {
 
     return (
         <div>
-            <h1>This camera is to submit the record</h1>
+            <h1 className='text-3xl font-bold text-center'>This camera is to submit the record</h1>
             <video ref={videoRef} style={{ width: '100%' }} />
             <canvas ref={canvasRef} style={{ display: 'none' }} />
             <p>{status}</p>

@@ -3,8 +3,8 @@ import QRCodeScanner from '../Components/QRCodeScanner';
 
 const Login = () => {
     const validUsername = 'rudra';
-    const validPassword = 'rudra@123';
-    const tokenKey = 'heyydontseeme';
+    const validPassword = 'rudra@1234';
+    const tokenKey = 'heyydontseemeok';
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -36,35 +36,40 @@ const Login = () => {
 
     return (
         <div className="login-container">
-            <h2>Login</h2>
             {isLoggedIn ? (
-                <div>
+                <div className='text-center p-14'>
                     <QRCodeScanner />
-                    <button onClick={handleLogout}>Logout</button>
+                    <button className='text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700' onClick={handleLogout}>Logout</button>
                 </div>
             ) : (
-                <form onSubmit={handleSubmit}>
-                    <div>
-                        <label>Username:</label>
-                        <input
-                            type="text"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                            required
-                        />
-                    </div>
-                    <div>
-                        <label>Password:</label>
-                        <input
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
-                    </div>
-                    <button type="submit">Login</button>
-                    {error && <p>{error}</p>}
-                </form>
+                <div className="login-container h-screen flex items-center justify-center">
+                    <form onSubmit={handleSubmit}>
+                        <div>
+                            <h2 className='text-2xl font-bold'>Login</h2>
+                            <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>Username:</label>
+                            <input
+                                className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                                type="text"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>Password:</label>
+                            <input
+                                className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                                type="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <br />
+                        <button className='text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700' type="submit">Login</button>
+                        {error && <p>{error}</p>}
+                    </form>
+                </div>
             )}
         </div>
     );
