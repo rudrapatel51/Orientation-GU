@@ -10,11 +10,8 @@ const QRCodeScanner = () => {
     useEffect(() => {
         const startCamera = async () => {
             try {
-                // Request the back camera specifically
                 const stream = await navigator.mediaDevices.getUserMedia({
-                    video: {
-                        facingMode: { ideal: 'environment' } // 'ideal' to fallback if not available
-                    }
+                    video: { facingMode: { ideal: 'environment' } }
                 });
 
                 videoRef.current.srcObject = stream;
@@ -55,32 +52,30 @@ const QRCodeScanner = () => {
             try {
                 const qrData = JSON.parse(data);
 
-                if (qrData.uid && qrData.name && qrData.mobile && qrData.email) {
-                    // Fetch all records to check if the mobile number already exists
-                    const response = await axios.get('https://sheetdb.io/api/v1/3y58wwz9jpmgy');
+                if (qrData.name && qrData.mobile && qrData.email) {
+                    const response = await axios.get('https://sheetdb.io/api/v1/zv0p7eq02ennh');
                     const sheetData = response.data;
 
                     const existingEntry = sheetData.find(entry => entry.mobile === qrData.mobile);
 
                     if (existingEntry) {
                         setStatus('Error: User already registered.');
-                        alert("User Already Exits");
+                        alert("User Already Exists");
                     } else {
-                        // If the record does not exist, add a new record
-                        await axios.post('https://sheetdb.io/api/v1/3y58wwz9jpmgy', {
+                        await axios.post('https://sheetdb.io/api/v1/zv0p7eq02ennh', {
                             data: {
-                                uid: qrData.uid,
                                 name: qrData.name,
                                 mobile: qrData.mobile,
                                 email: qrData.email,
-                                present: true
+                                course: qrData.course || "",
+                                present: true,
                             }
                         });
                         setStatus('Record added successfully');
-                        alert("user added successfull")
+                        alert("User added successfully");
                         setTimeout(() => {
                             window.location.reload();
-                        }, 1000); // Optional delay for user to see the success message
+                        }, 1000);
                     }
                 } else {
                     setStatus('Invalid QR code data format');
