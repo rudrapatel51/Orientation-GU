@@ -61,6 +61,9 @@ const QRCodeScanner = () => {
                     if (existingEntry) {
                         setStatus('Error: User already registered.');
                         alert("User Already Exists");
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1000);
                     } else {
                         await axios.post('https://sheetdb.io/api/v1/zv0p7eq02ennh', {
                             data: {

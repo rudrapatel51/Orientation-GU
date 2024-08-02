@@ -4,10 +4,8 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import UserForm from './Components/UserForm'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import QRCodeScanner from './Components/QRCodeScanner'
-import NoPage from "./Components/NoPage"
 import Login from './Authentication/Login'
-import QrLogin from './Authentication/QrLogin'
+import QRCodeGenerator from './Components/CheckQR'
 
 function App() {
 
@@ -16,6 +14,7 @@ function App() {
       <Routes>
         <Route path="/" element={<UserForm />} />
         <Route path="/scan" element={<Login />} />
+        <Route path="/qr" element={<QRCodeGenerator />} />
       </Routes>
     </BrowserRouter>
   )

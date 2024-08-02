@@ -11,30 +11,35 @@ const UserForm = () => {
     const [qrData, setQrData] = useState(null);
     const [error, setError] = useState('');
     const qrCodeRef = useRef(null);
+    const [isDisabled, setIsDisabled] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
 
+        // Email validation
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
             setError('Invalid email format.');
             return;
         }
 
+        // Mobile number validation
         const mobileRegex = /^\d{10}$/;
         if (!mobileRegex.test(mobile)) {
             setError('Mobile number must be exactly 10 digits.');
             return;
         }
 
-        const qrDataObject = { name, mobile, email, course };
+        const qrDataObject = { uid, name, mobile, email, course };
         setQrData(qrDataObject);
 
+        // Send data to Google Sheets API
         try {
             await axios.post('https://sheetdb.io/api/v1/3y58wwz9jpmgy', {
                 data: [qrDataObject]
             });
+            setIsDisabled(true);  // Disable the button upon successful form submission
         } catch (error) {
             setError('Failed to send data to the server.');
             console.error(error);
@@ -78,7 +83,7 @@ const UserForm = () => {
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             placeholder="Full Name"
-                            className="peer h-12 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-blue-500  "
+                            className="peer h-12 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-blue-500"
                             required
                         />
                         <label
@@ -97,7 +102,7 @@ const UserForm = () => {
                             value={mobile}
                             onChange={(e) => setMobile(e.target.value)}
                             placeholder="94286*****"
-                            className="peer h-12 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-blue-500  "
+                            className="peer h-12 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-blue-500"
                             required
                         />
                         <label
@@ -116,7 +121,7 @@ const UserForm = () => {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder="mail@example.com"
-                            className="peer h-12 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-blue-500  "
+                            className="peer h-12 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-blue-500"
                             required
                         />
                         <label
@@ -135,7 +140,7 @@ const UserForm = () => {
                             value={course}
                             onChange={(e) => setCourse(e.target.value)}
                             placeholder="Course"
-                            className="peer h-12 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-blue-500  "
+                            className="peer h-12 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-blue-500"
                             required
                         />
                         <label
@@ -145,7 +150,7 @@ const UserForm = () => {
                             Degree (Branch)
                         </label>
                     </div>
-                    <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition-colors duration-300">
+                    <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition-colors duration-300" disabled={isDisabled}>
                         Submit
                     </button>
                 </form>
