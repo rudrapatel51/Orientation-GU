@@ -154,7 +154,7 @@ const UserForm = () => {
                         Submit
                     </button>
                 </form>
-                {error && <p className="text-red-600 text-center mt-4">{error}</p>}
+
                 {qrData && (
                     <div ref={qrCodeRef} className="mt-4 text-center">
                         <QRCode value={JSON.stringify(qrData)} size={200} includeMargin={true} />
