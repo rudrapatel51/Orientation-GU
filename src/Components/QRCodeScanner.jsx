@@ -65,7 +65,7 @@ const QRCodeScanner = () => {
                             window.location.reload();
                         }, 1000);
                     } else {
-                        await axios.post('https://sheetdb.io/api/v1/zv0p7eq02ennh', {
+                        await axios.post('https://sheetdb.io/api/v1/11s8mej6fbj71', {
                             data: {
                                 name: qrData.name,
                                 mobile: qrData.mobile,
