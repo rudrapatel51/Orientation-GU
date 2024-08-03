@@ -53,7 +53,7 @@ const QRCodeScanner = () => {
                 const qrData = JSON.parse(data);
 
                 if (qrData.name && qrData.mobile && qrData.email) {
-                    const response = await axios.get('https://sheetdb.io/api/v1/11s8mej6fbj71');
+                    const response = await axios.get('https://sheetdb.io/api/v1/6ft6mfd7vqe08');
                     const sheetData = response.data;
 
                     const existingEntry = sheetData.find(entry => entry.mobile === qrData.mobile);
@@ -65,7 +65,7 @@ const QRCodeScanner = () => {
                             window.location.reload();
                         }, 1000);
                     } else {
-                        await axios.post('https://sheetdb.io/api/v1/11s8mej6fbj71', {
+                        await axios.post('https://sheetdb.io/api/v1/6ft6mfd7vqe08', {
                             data: {
                                 name: qrData.name,
                                 mobile: qrData.mobile,
