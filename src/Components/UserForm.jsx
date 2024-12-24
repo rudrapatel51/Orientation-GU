@@ -40,7 +40,7 @@ const OutsiderForm = () => {
         }
 
         try {
-            await axios.post('https://2047-27-56-180-134.ngrok-free.app/add_outsider_data', formData);
+            await axios.post(' https://5e73-2402-3a80-1cea-9fdf-8023-44cf-d177-e19f.ngrok-free.app/add_outsider_data', formData);
             setIsDisabled(true);
             navigate("/succes")
         } catch (error) {
@@ -129,147 +129,6 @@ const OutsiderForm = () => {
     );
 };
 
-const StudentForm = () => {
-    const [formData, setFormData] = useState({
-        "Student Name": "",
-        "Student Contact": "",
-        "Student Email": "",
-        "Student Enrollment": "",
-        "Course": ""
-    });
-    const [error, setError] = useState('');
-    const [isDisabled, setIsDisabled] = useState(false);
-    const navigate = useNavigate()
-
-    const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
-        });
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setError('');
-
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(formData["Student Email"])) {
-            setError('Invalid email format.');
-            return;
-        }
-
-        const mobileRegex = /^\d{10}$/;
-        if (!mobileRegex.test(formData["Student Contact"])) {
-            setError('Mobile number must be exactly 10 digits.');
-            return;
-        }
-
-        try {
-            await axios.post('https://2047-27-56-180-134.ngrok-free.app/add_student_data', formData);
-            setIsDisabled(true);
-            navigate("/succes")
-        } catch (error) {
-            setError('Failed to send data to the server.');
-            console.error(error);
-        }
-    };
-
-
-    return (
-        <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="relative">
-                <input
-                    autoComplete="off"
-                    name="Student Name"
-                    type="text"
-                    value={formData["Student Name"]}
-                    onChange={handleChange}
-                    placeholder="Full Name"
-                    className="peer h-12 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-blue-500"
-                    required
-                />
-                <label className="absolute left-0 -top-3.5 text-black text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-3 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm">
-                    Student Name
-                </label>
-            </div>
-
-            <div className="relative">
-                <input
-                    autoComplete="off"
-                    name="Student Contact"
-                    type="text"
-                    value={formData["Student Contact"]}
-                    onChange={handleChange}
-                    placeholder="98765*****"
-                    className="peer h-12 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-blue-500"
-                    required
-                />
-                <label className="absolute left-0 -top-3.5 text-black text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-3 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm">
-                    Student Contact
-                </label>
-            </div>
-
-            <div className="relative">
-                <input
-                    autoComplete="off"
-                    name="Student Email"
-                    type="email"
-                    value={formData["Student Email"]}
-                    onChange={handleChange}
-                    placeholder="mail@example.com"
-                    className="peer h-12 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-blue-500"
-                    required
-                />
-                <label className="absolute left-0 -top-3.5 text-black text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-3 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm">
-                    Student Email
-                </label>
-            </div>
-
-            <div className="relative">
-                <input
-                    autoComplete="off"
-                    name="Student Enrollment"
-                    type="text"
-                    value={formData["Student Enrollment"]}
-                    onChange={handleChange}
-                    placeholder="Student ID"
-                    className="peer h-12 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-blue-500"
-                    required
-                />
-                <label className="absolute left-0 -top-3.5 text-black text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-3 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm">
-                    Student Enrollment
-                </label>
-            </div>
-
-            <div className="relative">
-                <input
-                    autoComplete="off"
-                    name="Course"
-                    type="text"
-                    value={formData["Course"]}
-                    onChange={handleChange}
-                    placeholder="Current Course"
-                    className="peer h-12 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-blue-500"
-                    required
-                />
-                <label className="absolute left-0 -top-3.5 text-black text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-3 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm">
-                    Course
-                </label>
-            </div>
-
-            {error && <div className="text-red-500 text-sm">{error}</div>}
-
-            <button 
-                type="submit" 
-                className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition-colors duration-300"
-                disabled={isDisabled}
-            >
-                Submit
-            </button>
-
-        </form>
-    );
-};
 
 const DynamicForm = () => {
     const [formType, setFormType] = useState('student');
@@ -281,32 +140,9 @@ const DynamicForm = () => {
                     <img src='./Gandhinagar University Logo - Final.png' alt="University Logo" className="h-16 mx-auto mb-4" />
                     <h1 className="text-3xl font-bold mb-4">Registration</h1>
                     
-                    <div className="flex justify-center space-x-4 mb-6">
-                        <button
-                            onClick={() => setFormType('student')}
-                            className={`px-4 py-2 rounded-lg transition-colors duration-300 ${
-                                formType === 'student'
-                                    ? 'bg-blue-500 text-white'
-                                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                            }`}
-                        >
-                            GU Student
-                        </button>
-                        <button
-                            onClick={() => setFormType('outsider')}
-                            className={`px-4 py-2 rounded-lg transition-colors duration-300 ${
-                                formType === 'outsider'
-                                    ? 'bg-blue-500 text-white'
-                                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                            }`}
-                        >
-                            Outside GU
-                        </button>
-                    </div>
+                   <OutsiderForm/>
                 </div>
-                
-                {formType === 'student' ? <StudentForm /> : <OutsiderForm />}
-            </div>
+                            </div>
         </div>
     );
 };
