@@ -29,7 +29,7 @@ const OutsiderForm = () => {
         }
 
         try {
-            await axios.post('http://127.0.0.1:5000/add_outsider_data', formData);
+            await axios.post('https://2047-27-56-180-134.ngrok-free.app/add_outsider_data', formData);
             setIsDisabled(true);
             navigate("/succes")
         } catch (error) {
@@ -154,7 +154,7 @@ const StudentForm = () => {
         }
 
         try {
-            await axios.post('http://127.0.0.1:5000/add_student_data', formData);
+            await axios.post('https://2047-27-56-180-134.ngrok-free.app/add_student_data', formData);
             setIsDisabled(true);
             navigate("/succes")
         } catch (error) {
