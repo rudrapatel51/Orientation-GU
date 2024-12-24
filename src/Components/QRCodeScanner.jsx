@@ -68,7 +68,7 @@ const QRCodeScanner = () => {
 
                 // Format the data according to backend requirements
                 const formattedData = {
-                    "id": parseInt(qrData.id) || Date.now(), // Use QR data ID or generate timestamp
+                    "id": parseInt(qrData.id) || Date.now(), 
                     "Guest Name": qrData.name || qrData['guest name'],
                     "Guest Contact": qrData.contact || qrData['guest contact'],
                     "Aadhaar Details": qrData.aadhaar || qrData['aadhaar details'],

@@ -12,11 +12,22 @@ const OutsiderForm = () => {
     const [error, setError] = useState('');
     const [isDisabled, setIsDisabled] = useState(false);
     const handleChange = (e) => {
+        const { name, value } = e.target;
+        let formattedValue = value;
+        if (name === "Aadhaar Details") {
+            const numericValue = value.replace(/\D/g, "");
+    
+            formattedValue = numericValue
+                .match(/.{1,4}/g)
+                ?.join(" ") 
+                .slice(0, 14) || "";
+        }
         setFormData({
             ...formData,
-            [e.target.name]: e.target.value
+            [name]: formattedValue,
         });
     };
+    
 
     const handleSubmit = async (e) => {
         e.preventDefault();
