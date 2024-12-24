@@ -264,7 +264,7 @@ const DynamicForm = () => {
     const [formType, setFormType] = useState('student');
 
     return (
-        <div className="min-h-screen bg-gradient-to-r from-blue-400 to-blue-500 flex items-center justify-center py-12 px-6">
+        <div className="min-h-screen bg-gradient-to-r from-black to-gray-500 flex items-center justify-center py-12 px-6">
             <div className="bg-white shadow-lg rounded-3xl p-8 max-w-md w-full">
                 <div className="text-center mb-6">
                     <img src='./Gandhinagar University Logo - Final.png' alt="University Logo" className="h-16 mx-auto mb-4" />
