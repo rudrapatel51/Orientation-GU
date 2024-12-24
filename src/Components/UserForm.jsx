@@ -40,7 +40,7 @@ const OutsiderForm = () => {
         }
 
         try {
-            await axios.post(' https://5e73-2402-3a80-1cea-9fdf-8023-44cf-d177-e19f.ngrok-free.app/add_outsider_data', formData);
+            await axios.post('  https://ce8b-2402-3a80-1cea-9fdf-f8a0-409c-1e5b-95ad.ngrok-free.app/add_outsider_data', formData);
             setIsDisabled(true);
             navigate("/succes")
         } catch (error) {

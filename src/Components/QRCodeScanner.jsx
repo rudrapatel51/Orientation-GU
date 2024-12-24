@@ -66,7 +66,6 @@ const QRCodeScanner = () => {
                 const qrData = parseQRData(data);
                 console.log('Parsed QR Data:', qrData);
 
-                // Format the data according to backend requirements
                 const formattedData = {
                     "id": parseInt(qrData.id) || Date.now(), 
                     "Guest Name": qrData.name || qrData['guest name'],
@@ -75,7 +74,6 @@ const QRCodeScanner = () => {
                     "Reference Enrollment Number": qrData['enrollment number'] || qrData['reference enrollment number']
                 };
 
-                // Send data to backend
                 const response = await fetch('https://2047-27-56-180-134.ngrok-free.app/add_outsider_data', {
                     method: 'POST',
                     headers: {
