@@ -76,7 +76,7 @@ const QRCodeScanner = () => {
                 };
 
                 // Send data to backend
-                const response = await fetch('http://127.0.0.1:5000/add_outsider_data', {
+                const response = await fetch('https://2047-27-56-180-134.ngrok-free.app/add_outsider_data', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
