@@ -6,6 +6,7 @@ import UserForm from './Components/UserForm'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from './Authentication/Login'
 import QRCodeGenerator from './Components/CheckQR'
+import Succes from './Components/Succes'
 
 function App() {
 
@@ -14,6 +15,7 @@ function App() {
       <Routes>
         <Route path="/" element={<UserForm />} />
         <Route path="/scan" element={<Login />} />
+        <Route path="/succes" element={<Succes />} />
         <Route path="/qr" element={<QRCodeGenerator />} />
       </Routes>
     </BrowserRouter>

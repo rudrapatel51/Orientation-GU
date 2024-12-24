@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import jsQR from 'jsqr';
-import axios from 'axios';
 
 const QRCodeScanner = () => {
     const videoRef = useRef(null);
@@ -48,44 +47,60 @@ const QRCodeScanner = () => {
             }
         };
 
+        const parseQRData = (data) => {
+            const lines = data.split('\n');
+            const parsed = {};
+            
+            lines.forEach(line => {
+                const [key, value] = line.split(': ').map(item => item.trim());
+                if (key && value) {
+                    parsed[key.toLowerCase()] = value;
+                }
+            });
+            
+            return parsed;
+        };
+
         const handleScan = async (data) => {
             try {
-                const qrData = JSON.parse(data);
+                const qrData = parseQRData(data);
+                console.log('Parsed QR Data:', qrData);
 
-                if (qrData.name && qrData.mobile && qrData.email) {
-                    const response = await axios.get('https://sheetdb.io/api/v1/1ggt8cj7ev4nm');
-                    const sheetData = response.data;
+                // Format the data according to backend requirements
+                const formattedData = {
+                    "id": parseInt(qrData.id) || Date.now(), // Use QR data ID or generate timestamp
+                    "Guest Name": qrData.name || qrData['guest name'],
+                    "Guest Contact": qrData.contact || qrData['guest contact'],
+                    "Aadhaar Details": qrData.aadhaar || qrData['aadhaar details'],
+                    "Reference Enrollment Number": qrData['enrollment number'] || qrData['reference enrollment number']
+                };
 
-                    const existingEntry = sheetData.find(entry => entry.mobile === qrData.mobile);
+                // Send data to backend
+                const response = await fetch('http://127.0.0.1:5000/add_outsider_data', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formattedData)
+                });
 
-                    if (existingEntry) {
-                        setStatus('Error: User already registered.');
-                        alert("User Already Exists");
-                        setTimeout(() => {
-                            window.location.reload();
-                        }, 1000);
-                    } else {
-                        await axios.post('https://sheetdb.io/api/v1/1ggt8cj7ev4nm', {
-                            data: {
-                                name: qrData.name,
-                                mobile: qrData.mobile,
-                                email: qrData.email,
-                                course: qrData.course || "",
-                                present: true,
-                            }
-                        });
-                        setStatus('Record added successfully');
-                        alert("User added successfully");
-                        setTimeout(() => {
-                            window.location.reload();
-                        }, 1000);
-                    }
-                } else {
-                    setStatus('Invalid QR code data format');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
                 }
+
+                const result = await response.json();
+                setStatus('Guest data added successfully');
+                alert("Guest data added successfully");
+                
+                // Reload after successful submission
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
+
             } catch (error) {
                 console.error('Error processing QR code: ', error);
-                setStatus('Error processing QR code');
+                setStatus(`Error: ${error.message || 'Failed to process QR code'}`);
+                alert(error.message || "Error processing QR code. Please try again.");
             }
         };
 
@@ -103,10 +118,13 @@ const QRCodeScanner = () => {
 
     return (
         <div>
-            <h1 className='text-3xl font-bold text-center'>This camera is to submit the record</h1>
+            <h1 className='text-3xl font-bold text-center'>Scan Guest QR Code</h1>
+            <div className="my-4 text-center text-sm text-gray-600">
+                Please scan the guest's QR code to record their details
+            </div>
             <video ref={videoRef} style={{ width: '100%' }} />
             <canvas ref={canvasRef} style={{ display: 'none' }} />
-            <p>{status}</p>
+            <p className="mt-4 text-center text-sm font-semibold">{status}</p>
         </div>
     );
 };
