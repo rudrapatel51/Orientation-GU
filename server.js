@@ -7,7 +7,7 @@ require('dotenv').config();
 
 const authRoutes = require('./routes/auth');
 const studentRoutes = require('./routes/student');
-const publicRoutes = require('./routes/public');
+// const publicRoutes = require('./routes/public');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -16,6 +16,8 @@ const PORT = process.env.PORT || 3001;
 const allowedOrigins = [
   'http://localhost:3000',
   'http://127.0.0.1:3000',
+  'http://192.168.148.128:8081',
+  'http://172.31.174.128:8081'
   // Add other domains as needed for production
 ];
 
@@ -74,10 +76,10 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
 // Public routes
-app.post('/api/public/create', (req, res, next) => {
-  console.log('Handling POST request for /api/public/create');
-  createStudent(req, res).catch(next); // Proper error handling
-});
+// app.post('/api/student/create', (req, res, next) => {
+//   console.log('Handling POST request for /api/public/create');
+//   createStudent(req, res).catch(next); // Proper error handling
+// });
 
 // Protected routes
 app.use('/api/auth', authRoutes);

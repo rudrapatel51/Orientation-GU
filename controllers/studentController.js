@@ -79,17 +79,19 @@ const scanStudent = async (req, res) => {
 // Helper function to create a student (for testing)
 const createStudent = async (req, res) => {
   try {
-    const { name, mobileno, enrollment, email, institute } = req.body;
+    const { uuid, name, mobileno, enrollment, email, institute } = req.body;
 
-    if (!name || !mobileno || !enrollment || !email || !institute) {
+    // Validate input, including uuid
+    if (!uuid || !name || !mobileno || !enrollment || !email || !institute) {
       return res.status(400).json({
         success: false,
-        message: 'All fields are required'
+        message: 'All fields are required, including UUID'
       });
     }
 
     const student = await prisma.studentData.create({
       data: {
+        uuid, // Explicitly use the UUID provided by the frontend
         name,
         mobileno,
         enrollment,
@@ -108,7 +110,7 @@ const createStudent = async (req, res) => {
     if (error.code === 'P2002') {
       return res.status(409).json({
         success: false,
-        message: 'Student with this enrollment or email already exists'
+        message: 'Student with this UUID, enrollment, or email already exists'
       });
     }
     
