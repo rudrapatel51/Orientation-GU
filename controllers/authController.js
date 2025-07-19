@@ -71,12 +71,12 @@ const login = async (req, res) => {
 // Helper function to create a user (for testing)
 const createUser = async (req, res) => {
   try {
-    const { name, password } = req.body;
+    const { name, password , username} = req.body;
 
-    if (!name || !password) {
+    if (!name || !password || !username) {
       return res.status(400).json({
         success: false,
-        message: 'Name and password are required'
+        message: 'Name , password and username are required'
       });
     }
 
@@ -99,7 +99,8 @@ const createUser = async (req, res) => {
     const user = await prisma.user.create({
       data: {
         name,
-        password: hashedPassword
+        password: hashedPassword,
+        username,
       }
     });
 

@@ -14,11 +14,11 @@ const authenticateToken = async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    
+
     // Verify user still exists
     const user = await prisma.user.findUnique({
       where: { id: decoded.userId },
-      select: { id: true, name: true }
+      select: { id: true, name: true, isAdmin: true }
     });
 
     if (!user) {
@@ -28,9 +28,18 @@ const authenticateToken = async (req, res, next) => {
       });
     }
 
+    // Check if user is admin
+    if (!user.isAdmin) {
+      return res.status(403).json({
+        success: false,
+        message: 'Access denied: Admin privileges required'
+      });
+    }
+
     req.user = user;
     next();
   } catch (error) {
+    console.error('Auth middleware error:', error);
     return res.status(403).json({
       success: false,
       message: 'Invalid or expired token'

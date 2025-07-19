@@ -18,13 +18,17 @@ model StudentData {
   scanTimestamp DateTime @default(now()) @map("scan_timestamp")
   userScan      String?  @map("user_scan")
   
+  
   @@map("student_data")
 }
+
 
 model User {
   id       Int    @id @default(autoincrement())
   name     String @unique
   password String
+  username String
+  isAdmin  Boolean @default(false)
   
   @@map("users")
 }

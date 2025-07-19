@@ -2,12 +2,11 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
-const { createStudent } = require('./controllers/studentController');
 require('dotenv').config();
 
 const authRoutes = require('./routes/auth');
 const studentRoutes = require('./routes/student');
-// const publicRoutes = require('./routes/public');
+const adminRoutes = require('./routes/admin');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -18,7 +17,6 @@ const allowedOrigins = [
   'http://127.0.0.1:3000',
   'http://192.168.148.128:8081',
   'http://172.31.174.128:8081'
-  // Add other domains as needed for production
 ];
 
 const corsOptions = {
@@ -43,7 +41,7 @@ const corsOptions = {
 // Apply CORS middleware first
 app.use(cors(corsOptions));
 
-// Pre-flight requests handler (automatic with cors middleware, but explicit for clarity)
+// Pre-flight requests handler
 app.options('*', cors(corsOptions));
 
 // Rate limiting configuration (skip OPTIONS requests)
@@ -62,7 +60,7 @@ app.use(helmet({
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "'unsafe-inline'"], // adjust for your needs
+      scriptSrc: ["'self'", "'unsafe-inline'"],
       styleSrc: ["'self'", "'unsafe-inline'"],
       imgSrc: ["'self'", 'data:'],
     }
@@ -75,15 +73,10 @@ app.use(limiter);
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
-// Public routes
-// app.post('/api/student/create', (req, res, next) => {
-//   console.log('Handling POST request for /api/public/create');
-//   createStudent(req, res).catch(next); // Proper error handling
-// });
-
-// Protected routes
+// Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/student', studentRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Health check endpoint
 app.get('/health', (req, res) => {
@@ -107,8 +100,7 @@ app.use('*', (req, res) => {
 // Global error handler
 app.use((err, req, res, next) => {
   console.error('Global error handler:', err);
-  
-  // Handle CORS errors specifically
+
   if (err.message.includes('CORS')) {
     return res.status(403).json({
       success: false,
@@ -137,8 +129,7 @@ const shutdown = () => {
     console.log('Server closed');
     process.exit(0);
   });
-  
-  // Force close after 5 seconds
+
   setTimeout(() => {
     console.error('Forcing shutdown after timeout');
     process.exit(1);
