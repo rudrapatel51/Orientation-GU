@@ -1,0 +1,37 @@
+generator client {
+  provider = "prisma-client-js"
+   binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+}
+
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+} 
+
+model StudentData {
+  uuid          String   @id @default(cuid())
+  name          String
+  mobileno      String
+  enrollment    String   @unique
+  email         String   @unique
+  institute     String
+  transportation_availability String
+  status        String   @default("pending") // pending, present
+  scanTimestamp DateTime @default(now()) @map("scan_timestamp")
+  userScan      String?  @map("user_scan")
+  
+  
+  @@map("student_data")
+}
+
+
+model User {
+  id       Int    @id @default(autoincrement())
+  name     String @unique
+  password String
+  username String
+  isAdmin  Boolean @default(false)
+  
+  @@map("users")
+}

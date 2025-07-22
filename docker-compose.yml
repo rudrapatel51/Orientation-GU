@@ -1,0 +1,36 @@
+services:
+  web:
+    build:
+      context: ./back
+      dockerfile: Dockerfile
+    ports:
+      - "3006:3001"
+    #environment:
+      #- NODE_ENV=production
+    restart: always
+
+  frontend:
+    build:
+      context: ./Front
+    ports:
+      - "8080:80"
+    depends_on:
+      - web
+    restart: always
+
+
+  dbor25:
+    image: postgres:17
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=Siiq@0026
+      - POSTGRES_DB=or25
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+
+
+volumes:
+  postgres_data:
