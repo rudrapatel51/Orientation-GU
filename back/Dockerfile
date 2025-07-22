@@ -1,5 +1,5 @@
 # Use official Node.js LTS image
-FROM node:20-alpine as build
+FROM node:22-alpine as build
 
 # Set working directory
 WORKDIR /app
@@ -10,7 +10,7 @@ RUN npm install
 
 # Copy source code
 COPY . .
-
+RUN apk add --no-cache openssl
 
 RUN npm install prisma
 

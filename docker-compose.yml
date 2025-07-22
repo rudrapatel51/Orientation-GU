@@ -5,8 +5,13 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3006:3001"
-    #environment:
-      #- NODE_ENV=production
+    environment:
+      # - NODE_ENV=production
+      - DATABASE_URL="postgres://postgres:Siiq@0026@dbor25:5433/or25"
+      - JWT_SECRET="5c0841a288e4e48bf1d52ca10671baa6556a5251"
+      - JWT_EXPIRES_IN="24h"
+      - PORT=3001
+
     restart: always
 
   frontend:
