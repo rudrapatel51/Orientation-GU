@@ -12,11 +12,19 @@ const StudentForm = () => {
     enrollment: '',
     email: '',
     institute: '',
+    transportation_availability: 'UNIVERSITY TRANSPORTATION',
   });
   const [error, setError] = useState('');
   const [isDisabled, setIsDisabled] = useState(false);
   const [uuid, setUuid] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const transportationOptions = [
+    'UNIVERSITY TRANSPORTATION',
+    'BY SELF - 2 WHEELER',
+    'BY SELF - 4 WHEELER',
+    'OTHER (AMTS, AUTO, CAB, Etc)'
+  ];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -54,7 +62,7 @@ const StudentForm = () => {
     }
 
     // Validate required fields
-    if (!formData.name || !formData.enrollment || !formData.institute) {
+    if (!formData.name || !formData.enrollment || !formData.institute || !formData.transportation_availability) {
       setError('All fields are required.');
       setIsSubmitting(false);
       return;
@@ -70,16 +78,20 @@ const StudentForm = () => {
         enrollment: formData.enrollment,
         email: formData.email,
         institute: formData.institute,
+        transportation_availability: formData.transportation_availability,
       }, {
         headers: {
           'Content-Type': 'application/json',
-          // Add Authorization header if required by backend
-          // 'Authorization': 'Bearer your-token-here'
         }
       });
 
       if (response.data.success) {
-        setUuid(generatedUuid); // Show QR code only after successful API response
+        // Include transportation_availability in QR code data
+        const qrData = JSON.stringify({
+          uuid: generatedUuid,
+          
+        });
+        setUuid(qrData);
         setIsDisabled(true);
         // Reset form
         setFormData({
@@ -88,19 +100,19 @@ const StudentForm = () => {
           enrollment: '',
           email: '',
           institute: '',
+          transportation_availability: 'UNIVERSITY TRANSPORTATION',
         });
         // Navigate to success page after a delay to show QR code
         setTimeout(() => {
-        //   navigate('/success', { state: { uuid: generatedUuid, name: formData.name } });
-        }, 3000); // 3-second delay to allow user to see QR code
+          // navigate('/success', { state: { uuid: generatedUuid, name: formData.name } });
+        }, 3000);
       } else {
         setError(response.data.message || 'Failed to create student.');
       }
     } catch (error) {
       if (error.response) {
-        // Handle specific backend errors
         if (error.response.status === 400) {
-          setError('All fields are required, including UUID.');
+          setError('All fields are required, including UUID and transportation_availability.');
         } else if (error.response.status === 409) {
           setError('Student with this UUID, enrollment, or email already exists.');
         } else {
@@ -199,6 +211,26 @@ const StudentForm = () => {
         />
         <label className="absolute left-0 -top-3.5 text-black text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-3 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm">
           Institute
+        </label>
+      </div>
+
+      <div className="relative">
+        <select
+          name="transportation_availability"
+          value={formData.transportation_availability}
+          onChange={handleChange}
+          className="peer h-12 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-blue-500"
+          required
+          disabled={isDisabled || isSubmitting}
+        >
+          {transportationOptions.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
+        <label className="absolute left-0 -top-3.5 text-black text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-3 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm">
+          Transportation Availability
         </label>
       </div>
 
