@@ -28,14 +28,7 @@ const authenticateToken = async (req, res, next) => {
       });
     }
 
-    // Check if user is admin
-    if (!user.isAdmin) {
-      return res.status(403).json({
-        success: false,
-        message: 'Access denied: Admin privileges required'
-      });
-    }
-
+    // Attach user to request object
     req.user = user;
     next();
   } catch (error) {

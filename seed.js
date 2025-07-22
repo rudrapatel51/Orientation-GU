@@ -11,7 +11,7 @@ async function seed() {
         name: 'admin01',
         password: hashedPassword,
         username: 'Admin User',
-        isAdmin: true
+        isAdmin: "true",
       }
     });
     console.log('Admin user created');
