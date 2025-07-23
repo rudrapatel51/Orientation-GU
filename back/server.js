@@ -18,7 +18,7 @@ const allowedOrigins = [
   'http://192.168.148.128:8081',
   'http://172.31.174.128:8081',
   'https://api.gu-tech.org',
-  'https://orientation.gu-tech.org'
+  'https://orientation25.gu-tech.org'
 ];
 
 const corsOptions = {
