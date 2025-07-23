@@ -3,23 +3,32 @@ services:
     build:
       context: ./back
       dockerfile: Dockerfile
+    networks:
+      - dbor
     ports:
       - "3006:3001"
-    #environment:
-      #- NODE_ENV=production
+    environment:
+      # - NODE_ENV=production
+      - DATABASE_URL=postgres://postgres:Siiq@0026@db:5432/or25
+      - JWT_SECRET=5c0841a288e4e48bf1d52ca10671baa6556a5251
+      - JWT_EXPIRES_IN=24h
+      - PORT=3001
+
     restart: always
 
   frontend:
     build:
       context: ./Front
+    networks:
+      - dbor
     ports:
-      - "8080:80"
+      - "8085:80"
     depends_on:
       - web
     restart: always
 
 
-  dbor25:
+  db:
     image: postgres:17
     restart: always
     environment:
@@ -28,9 +37,13 @@ services:
       - POSTGRES_DB=or25
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    ports:
-      - "5433:5432"
+    networks:
+      - dbor
 
+
+networks:
+  dbor:
+    driver: bridge
 
 volumes:
   postgres_data:

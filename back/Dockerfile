@@ -1,5 +1,12 @@
 # Use official Node.js LTS image
-FROM node:20-alpine as build
+FROM node:latest as build
+
+RUN apt-get update && apt-get install -y \
+    curl \
+    wget \
+    vim \
+    openssl \
+    && apt-get clean
 
 # Set working directory
 WORKDIR /app
